@@ -1016,7 +1016,10 @@ def _decrypt_aes_cbc_multi(ciphertext, keys, logger, initialization_vector=b' ' 
         try:
             return plaintext.decode()
         except UnicodeDecodeError:
-            pass
+            try:
+                return plaintext[32:].decode()
+            except UnicodeDecodeError:
+                pass
     logger.warning('failed to decrypt cookie (AES-CBC) because UTF-8 decoding failed. Possibly the key is wrong?', only_once=True)
     return None
 
